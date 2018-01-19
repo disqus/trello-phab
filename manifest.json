@@ -1,0 +1,19 @@
+{
+  "name": "trello-phab",
+  "details":"Interpret URLs attached to cards by phab-trello.",
+  "icon": {
+    "url": "phabricator.png"
+  },
+  "author": "webrender",
+  "capabilities": [
+    "attachment-sections",
+    "board-buttons",
+    "card-badges",
+    "callback"
+  ],
+  "connectors": {
+    "iframe": {
+      "url": "./index.html"
+    }
+  }
+}

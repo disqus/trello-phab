@@ -1,0 +1,19 @@
+{
+  "name": "trello-phab",
+  "description": "Interpret URLs attached to cards by phab-trello.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.16.2",
+    "body-parser": "^1.18.2",
+    "request-promise": "^4.2.2",
+    "request": "^2.83.0"
+  },
+  "keywords": [
+    "node",
+    "express"
+  ],
+  "license": "MIT"
+}

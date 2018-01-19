@@ -1,0 +1,151 @@
+<html>
+<head>
+  <link rel="stylesheet" href="https://trello.com/power-ups/power-up.css">
+  <script src="https://trello.com/power-ups/power-up.min.js"></script>
+  <script src="https://use.fontawesome.com/07f72ead6c.js"></script>
+  <script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+  <style>
+    .wrap {
+      background: #fff;
+      border-radius: 5px;
+      border: 1px solid #BFCFD9;
+    }
+    body {
+      cursor: pointer;
+    }
+    #status, #reviewers, #repo {
+      display: inline-block;
+      margin: 5px;
+    }
+    .status {
+      margin-right: 10px;
+      padding: 5px;
+      color: #6B748C;
+      border: 1px solid transparent;
+      border-radius: 5px;
+    }
+    
+    #reviewers img {
+      height: 24px;
+      width: 24px;
+      margin: 0 2px;
+      border-radius: 2px;
+      vertical-align: middle;
+    }
+    .status-grey {
+      background: #EDEFF2;
+    }
+    .status-green {
+      background: #DDEFDE;
+      color: #326d34;
+      border-color: #c6e6c7;    
+    }
+    .status-red {
+      background: #f7e6e6;
+      border-color: #efcfcf;
+      color: #a53737;    
+    }
+    .status-purple {
+      background: #eae6f7;
+      border-color: #d1c9ee;
+      color: #6e5cb6;
+    }
+    .status-yellow {
+      background: #fdf3da;
+      border-color: #e9dbcd;
+      color: #726f56;    
+    }
+    .noimg {
+      display: inline-block;
+      background: #EDEFF2;
+      height: 24px;
+      width: 24px;
+      font-weight: bold;
+      line-height: 24px;
+      margin: 0 2px;
+      text-align: center;
+      top: 2px;
+      border-radius: 2px;
+      position: relative;
+    }
+  </style>  
+</head>
+<body>
+  <div class="wrap">
+    <div id="status">
+    
+    </div>
+    <div id="repo">
+      
+    </div>
+    <div id="reviewers">
+      <strong style="margin-right: 5px;">Reviewers: </strong>
+    </div>
+  </div>
+  <script>
+    var t = window.TrelloPowerUp.iframe();
+
+    // you can access arguments passed to your iframe like so
+    var phabData = t.arg('phabData');
+    phabData.reviewers.forEach(reviewer => {
+      $.get('https://api.trello.com/1/members/' + reviewer, data => {
+        if (data.avatarHash) {
+          var img = document.createElement('img');
+          img.src = `https://trello-avatars.s3.amazonaws.com/${data.avatarHash}/30.png`;
+          document.getElementById('reviewers').appendChild(img);
+        } else {
+          var noimg = document.createElement('div');
+          noimg.className = 'noimg';
+          noimg.innerHTML = data.initials;
+          document.getElementById('reviewers').appendChild(noimg);
+        }  
+      });
+    })
+
+    t.render(function(){
+      var div = document.createElement('div');
+      div.classList.add('status');
+      switch(phabData.status) {
+        case 'Needs Review':
+          div.innerHTML = '<span class="fa fa-square-o"></span> Needs Review';
+          div.classList.add('status-grey');
+          break;
+        case 'Changes Planned':
+          div.innerHTML = '<span class="fa fa-headphones"></span> Changes Planned';
+          div.classList.add('status-red');
+          break;
+        case 'Needs Revision':
+          div.innerHTML = '<span class="fa fa-refresh"></span> Needs Revision';
+          div.classList.add('status-red');
+          break;
+        case 'Accepted':
+          div.innerHTML = '<span class="fa fa-check"></span> Accepted';
+          div.classList.add('status-green');
+          break;
+        case 'Closed':
+          div.innerHTML = '<span class="fa fa-check-square-o"></span> Closed';
+          div.classList.add('status-purple');
+          break;
+        case 'Abandoned':
+          div.innerHTML = '<span class="fa fa-plane"></span> Abandoned';
+          div.classList.add('status-purple');
+          break;
+        default:
+          div.innerHTML = '<span class="fa fa-question"></span> Unknown';
+          div.classList.add('status-yellow');
+          break;
+      }
+      document.getElementById('status').innerHTML = '';
+      document.getElementById('status').appendChild(div);
+      document.getElementById('repo').innerHTML = 'r'+phabData.repo;
+    });
+    
+    $('.wrap').click(evt => {
+      window.open(t.arg('phabUrl') + 'D' + phabData.id);
+    })
+  </script>
+</body>
+</html>
