@@ -77,13 +77,13 @@ TrelloPowerUp.initialize({
     .then(webhook => {
       if (webhook && webhook.url) {
         return [{
-          icon: 'phabricator.png',
+          icon: 'https://' + window.location.hostname + 'phabricator.png',
           text: '✅',
           url: webhook.url,
         }];
       } else {
         return [{
-          icon: 'phabricator.png',
+          icon: 'https://' + window.location.hostname + 'phabricator.png',
           text: '⚠️',
           callback: (t, opts) => {
             return t.board('id')
