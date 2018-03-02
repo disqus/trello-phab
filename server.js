@@ -14,7 +14,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use(express.static('./'));
+app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
