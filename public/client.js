@@ -30,7 +30,7 @@ TrelloPowerUp.initialize({
           var data = diffData[match[1]];
           attachments.push({
             claimed: diffs,
-            icon: 'phabricator.png', // Must be a gray icon, colored icons not allowed.
+            icon: './phabricator.png', // Must be a gray icon, colored icons not allowed.
             title: 'D' + data.id + ': ' + data.title,
             content: {
               type: 'iframe',
@@ -77,13 +77,13 @@ TrelloPowerUp.initialize({
     .then(webhook => {
       if (webhook && webhook.url) {
         return [{
-          icon: 'https://' + window.location.hostname + 'phabricator.png',
+          icon: './phabricator.png',
           text: '✅',
           url: webhook.url,
         }];
       } else {
         return [{
-          icon: 'https://' + window.location.hostname + 'phabricator.png',
+          icon: './phabricator.png',
           text: '⚠️',
           callback: (t, opts) => {
             return t.board('id')
